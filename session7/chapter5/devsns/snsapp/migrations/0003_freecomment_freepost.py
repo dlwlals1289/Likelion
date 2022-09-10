@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(max_length=200)),
                 ('body', models.TextField()),
                 ('date', models.DateTimeField(auto_now_add=True)),
-                ('author', models.ForeignKey(on_delete='cascade', to=settings.AUTH_USER_MODEL)),
+                ('author', models.ForeignKey(on_delete=models.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.CreateModel(
