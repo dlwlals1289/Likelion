@@ -1,0 +1,24 @@
+article{
+    display: flex;
+    flex-direction: column;
+}
+
+.question{
+    display: none;
+}
+.result{
+    display: none;
+}
+#end_img{
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+}
+#start_img{
+    width: 500px;
+    height: 500px;
+    margin: 0 auto;
+}
+.container{
+    background-color: antiquewhite;
+}

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="container">
+    <article class="start"> <!-- 첫 화면 -->
+        <h1 id="test_start" class="mt-5 text-center">나의 커피 취향은 무엇일까?</h1>
+        <img id="start_img" class="rounded" src="coffee_main.jpg" alt="coffee_main">
+        <button type="button" class="btn btn-outline-dark mt-5" onclick='start();'>테스트 시작하기</button>
+    </article>
+    <article class="question"> <!-- 문제 -->
+        <div class="progress mt-5"> <!-- 진행 현황 보여주는 바(bar) -->
+            <div class="progress-bar" role="progressbar" style="width: calc(100/12*1)"></div>
+        </div>
+        <h2 id="title" class="text-center mt-5">문제</h2>
+        <input id="type" type="hidden" value="EI">
+        <button id="A" type="button" class="btn btn-primary mt-5">Primary</button>
+        <button id="B" type="button" class="btn btn-primary mt-5">Primary</button>
+    </article>
+    <article class="result">
+        <img id="end_image" class="rounded-circle mt-5" src="lion-3576045_640.jpg" alt="animal">
+        <h2 id="animal" class="text-center mt-5">커피이름</h2>
+        <h3 id="explain" class="text-center mt-5">설명</h3>
+    </article>
+    <input type="hidden" id="EI" value="0">
+    <input type="hidden" id="SN" value="0">
+    <input type="hidden" id="TF" value="0">
+    <input type="hidden" id="JP" value="0">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+    <script>
+        var num = 1;
+        var q={
+            1: {"title": "3일 뒤까지 마쳐야 할 과제가 있다. 그런데 친구가 내일 만나서 놀자고 한다. 그럴 때 당신은?", "type": "EI", "A": "만난다 : 놀면서 에너지를 충전 후 열심히 과제해야지!", "B": "안 만난다 : 과제 마치면 집에서 게임, 스마트폰, 영화시청 등 할 일이 얼마나 많은데!"},
+            2: {"title": "아르바이트에서 진상 손님을 만나 기분이 좋지 않다. 아르바이트를 마친 후 당신은?", "type": "EI", "A": "당장 친구를 불러 코인노래방으로 GO~", "B": "보려고 했던 넷플릭스 시리즈 정주행 해야지~!"},
+            3: {"title": "당신이 바라던 회사 2곳에 동시에 합격했다! 이럴 때 당신은?", "type": "EI", "A": "야근이 일주일에 2번은 기본! 그러나 상사, 동료들이 너무 좋다!", "B": "칼퇴는 무조건 보장! 팀의 분위기가 딱딱한 회사"},
+            4: {"title": "꿈 속에서 조상님이 다음 주 로또 번호가 1, 2, 3, 4, 5, 6 이라고 알려줬다. 일어나서 당신은?", "type": "SN", "A": "로또를 안 산다. : 저 번호가 당첨될리 절대 없지! 사는 것은 돈 낭비 시간 낭비야~", "B": "산다. : 이건 무조건 사야 해! 꿈에 조상님이 나오기 쉽지 않아 무조건 당첨이다!"},
+            5: {"title": "6시에 퇴근하는 당신, 문득 시계를 봤더니 4시 44분! 이럴 때 당신은?", "type": "SN", "A": "시간이 왜 이렇게 늦게 가지... 빨리 퇴근하고 싶다.", "B": "왜 하필이면 저 시간이야ㅠㅠ 불길해"},
+            6: {"title": "오늘은 사귄 후 처음으로 맞는 남자친구 OR 여자친구 생일이다. 이때 당신은?", "type": "SN", "A": "저번에 애인이 예쁘다고 말한 브랜드 옷을 사줘야겠다! 역시 선물은 실용적이여야지", "B": "처음이니까 직접 만든 케이크와 생일상을 차려줘야겠다! 역시 선물은 정성이지~"},
+            7: {"title": "아르바이트 퇴근 시간이 지났는데, 뒷 타임 아르바이트생이 안 온다. 이때 당신은?", "type": "TF", "A": "퇴근 시간 지났는데 왜 안 와! 사장님께 전화 드려야 겠다.", "B": "무슨일 생겼나? 큰일은 아니겠지? 조금만 더 기다려보자"},
+            8: {"title": "눈이 오는 날, 길을 걷다가 다른 사람이 빙판길에 넘어지는 것을 보았다. 이때 당신은?", "type": "TF", "A": "이런! 나도 넘어지지 않게 조심해야겠다.", "B": "창피하겠다ㅠㅠ 바닥이 완전히 얼어서 아플텐데..."},
+            9: {"title": "길을 걷다가 우연히 오랜만에 보는 친구를 만났다. 이때 당신은?", "type": "TF", "A": "저 옷! 내가 가지고 싶었던 건데! 한정판인데 어떻게 샀냐고 물어볼까?", "B": "얼굴이 피곤해 보인다. 요새 잠을 잘 못 자나? 무슨 일 있나 물어볼까?"},
+            10: {"title": "여행을 위해 쇼핑리스트와 그것들만 살 수 있는 만큼의 돈을 가지고 장을 보러왔는데, 리스트에 없지만 너무 먹고 싶은 것을 발견했다. 이때 당신은? ", "type": "JP", "A": "저걸 사면 리스트에 있는 것을 못 사니까 다음에 사먹자!", "B": "너무 먹고 싶으니 차라리 저걸 사고 리스트에 있는 것 중 몇 개는 사지 말자!"},
+            11: {"title": "평소 가고 싶었던 맛집을 갔는데, 하필 문을 안 열었다! 이때 당신은?", "type": "JP", "A": "다른 맛집을 찾아 그곳으로 간다. : 그래도 맛있는 것은 먹어야지~!", "B": "그냥 걸어다니다 맛있게 생긴 가게로 들어간다 : 귀찮고 배도 고픈데 적당히 괜찮은 곳으로 가자!"},
+            12: {"title": "너무 배가 고프다. 최애 가게에서 배달 시키려 하였으나 1시간 뒤에 오픈한다. 이때 당신은?", "type": "JP", "A": "1시간 기다렸다가 먹는다. : 그래도 밥은 맛있는 곳에서 먹어야지!", "B": "다른 가게에서 시켜 먹는다. : 배가 너무 고파! 당장 아무거나 시켜!"},
+        }
+        var result = {
+            "ISTJ":{"animal" : "하마", "explain": "하마설명", "img" : "lion.jpg"},
+            "ENFP":{"animal" : "멋쟁이사자", "explain": "멋쟁이사자설명", "img" : "lion.jpg"},
+            "ENTJ":{"animal" : "호랑이", "explain": "호랑이설명", "img" : "lion.jpg"}
+        }
+        function start(){
+            $(".start").hide();
+            $(".question").show();
+            next();
+        }
+        $("#A").click(function(){
+            var type = $("#type").val();
+            var preValue = $("#"+type).val();
+            $("#"+type).val(parseInt(preValue)+1);
+            next();
+        });
+        $("#B").click(function(){
+            next();
+        });
+        function next(){
+            if(num==13){
+                $(".question").hide();
+                $(".result").show();
+                var mbti="";
+                ($("#EI").val()<2)? mbti+="I" : mbti+="E";
+                ($("#SN").val()<2)? mbti+="N" : mbti+="S";
+                ($("#TF").val()<2)? mbti+="F" : mbti+="T";
+                ($("#JP").val()<2)? mbti+="P" : mbti+="J";
+                alert(mbti);
+                $("#img").attr("src", result[mbti]["img"]);
+                $("#animal").html(result[mbti]["animal"]);
+                $("#explain").html(result[mbti]["explain"]);
+            }
+            else{
+                $(".progress-bar").attr('style', 'width: calc(100/12*'+num+'%)');
+                $("#title").html(q[num]["title"]);
+                $("#type").val(q[num]["type"]);
+                $("#A").html(q[num]["A"]);
+                $("#B").html(q[num]["B"]);
+                num++;
+            }
+        }
+    </script>
+</body>
+</html>
